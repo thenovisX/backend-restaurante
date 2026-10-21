@@ -86,13 +86,19 @@ function redes(): array
     ]);
 }
 
-/** Horario para pintar: [['dia' => 'Lunes', 'texto' => 'Cerrado', 'hoy' => bool], …] */
+/**
+ * Horario para pintar: [['dia' => 'Lunes', 'texto' => '13:00–16:00', 'cocina' => '13:30–15:30', 'hoy' => bool], …]
+ * 'cocina' solo viene si hay horario de cocina activado y ese día es distinto del de apertura ('' si no).
+ */
 function horario(): array
 {
     $s = settings();
     $out = [];
     foreach (WEEKDAYS as $n => $dia) {
-        $out[] = ['dia' => $dia, 'texto' => ranges_text($s['hours'][$n] ?? []), 'hoy' => (string)$n === date('N')];
+        $open = $s['hours'][$n] ?? [];
+        $kit = $s['kitchen_hours'][$n] ?? [];
+        $cocina = $s['kitchen_on'] && $open && $kit != $open ? ranges_text($kit) : '';
+        $out[] = ['dia' => $dia, 'texto' => ranges_text($open), 'cocina' => $cocina === 'Cerrado' ? 'cerrada' : $cocina, 'hoy' => (string)$n === date('N')];
     }
     return $out;
 }

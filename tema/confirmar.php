@@ -2,7 +2,8 @@
 /*
  * El cliente llega aquí desde el enlace del WhatsApp. Variables: $ok, $pendiente, $estado, $reserva, $fecha
  * (dia_semana, dia, mes, texto), $error (titulo, texto), $ics_url (añadir al calendario) y $confirmar_form
- * (función que pinta el botón «Confirmar mi reserva»: abrir el enlace NO confirma, hay que pulsarlo).
+ * (función que pinta el botón «Confirmar mi reserva»: abrir el enlace NO confirma, hay que pulsarlo) y
+ * $cancelar_form (botón «Cancelar la reserva»).
  */
 require __DIR__ . '/partes.php';
 abrir(($ok ? 'Reserva confirmada' : ($pendiente ? 'Confirma tu reserva' : 'Reserva')) . ' · ' . $s['name'], 'pagina');
@@ -33,6 +34,7 @@ abrir(($ok ? 'Reserva confirmada' : ($pendiente ? 'Confirma tu reserva' : 'Reser
   </div>
   <?php if ($s['phone']): ?><p class="nota">¿Algún cambio? Llámanos al <a href="<?= h(tel_href($s['phone'])) ?>"><?= h($s['phone']) ?></a>.</p><?php endif; ?>
   <?php endif; ?>
+  <div class="confirmar-cancelar"><span>¿No puedes venir?</span> <?= $cancelar_form('Cancelar la reserva', 'enlace-boton') ?></div>
 <?php else: ?>
   <h1 class="titulo"><?= h($error['titulo']) ?></h1>
   <p class="texto-grande"><?= h($error['texto']) ?></p>

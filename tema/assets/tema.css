@@ -152,6 +152,7 @@ p { margin: 0 0 1em; }
 .pie-links { flex-direction: column; gap: 8px; }
 .horario { list-style: none; padding: 0; margin: 0; }
 .horario li { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.1); font-size: .95rem; }
+.horario .cocina { display: block; font-size: .8rem; color: #BDB2A7; text-align: right; font-weight: 400; }
 .horario li.hoy { color: #fff; font-weight: 700; }
 .pie-legal { margin-top: 48px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.12); font-size: .85rem; color: #BDB2A7; }
 
@@ -217,4 +218,7 @@ details.borrar .form { margin-top: 14px; }
 .ticket dd { margin: 2px 0 0; font-size: 1.35rem; font-weight: 700; overflow-wrap: anywhere; }
 .ticket .nota { margin: 6px 0 0; }
 .confirmar .botones .boton { flex: 1 1 auto; }
+.confirmar-cancelar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--linea); color: var(--suave); }
+.confirmar-cancelar form { display: inline; }
+.enlace-boton { background: none; border: 0; padding: 0; font: inherit; color: var(--tinta); text-decoration: underline; cursor: pointer; }
 .confirmar-boton .boton { width: 100%; min-height: 58px; font-size: 1.08rem; }

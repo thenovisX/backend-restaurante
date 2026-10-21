@@ -57,7 +57,7 @@ function cerrar(): void
     <div>
       <h2>Horario</h2>
       <ul class="horario">
-        <?php foreach (horario() as $d): ?><li<?= $d['hoy'] ? ' class="hoy"' : '' ?>><span><?= $d['dia'] ?></span><span><?= h($d['texto']) ?></span></li><?php endforeach; ?>
+        <?php foreach (horario() as $d): ?><li<?= $d['hoy'] ? ' class="hoy"' : '' ?>><span><?= $d['dia'] ?></span><span><?= h($d['texto']) ?><?php if ($d['cocina']): ?><small class="cocina">Cocina: <?= h($d['cocina']) ?></small><?php endif; ?></span></li><?php endforeach; ?>
       </ul>
     </div>
     <div>
