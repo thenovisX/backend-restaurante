@@ -217,3 +217,4 @@ details.borrar .form { margin-top: 14px; }
 .ticket dd { margin: 2px 0 0; font-size: 1.35rem; font-weight: 700; overflow-wrap: anywhere; }
 .ticket .nota { margin: 6px 0 0; }
 .confirmar .botones .boton { flex: 1 1 auto; }
+.confirmar-boton .boton { width: 100%; min-height: 58px; font-size: 1.08rem; }

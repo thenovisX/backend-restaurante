@@ -41,8 +41,19 @@ if (isset($_GET['ics'])) {
 
 header('Cache-Control: no-store');
 header('X-Robots-Tag: noindex');
-[$state, $r] = confirm_by_customer($id, $token);
+// Solo se confirma al pulsar el botón (POST). Abrir el enlace no cambia nada: WhatsApp, Telegram y los
+// antivirus del correo abren los enlaces solos para la vista previa y confirmarían reservas sin que nadie las viera.
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    $id = (int)($_POST['r'] ?? 0);
+    $token = (string)($_POST['t'] ?? '');
+    confirm_by_customer($id, $token);
+    header('Location: confirmar.php?r=' . $id . '&t=' . rawurlencode($token) . '&hecho=1', true, 303);
+    exit;
+}
+[$state, $r] = peek_by_customer($id, $token);
+if ($state === 'ya' && isset($_GET['hecho'])) $state = 'confirmada';
 $ok = in_array($state, ['confirmada', 'ya'], true);
+$pend = $state === 'pendiente';
 
 $errores = [
     'cancelada' => ['Esta reserva está cancelada', 'Si quieres venir, haz una reserva nueva: tardas un minuto.'],
@@ -51,7 +62,7 @@ $errores = [
     'invalido'  => ['Este enlace no funciona', 'Puede que se haya copiado incompleto. Ábrelo otra vez desde el WhatsApp o haz una reserva nueva.'],
 ];
 $fecha = null;
-if ($ok) {
+if ($ok || $pend) {
     $ts = strtotime($r['date'] . ' ' . $r['time']);
     $dias = ['', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
     $meses = ['', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
@@ -59,10 +70,15 @@ if ($ok) {
 }
 
 tema_render('confirmar', [
-    'estado' => $state,                       // confirmada, ya, cancelada, rechazada, pasada, invalido
+    'estado' => $state,                       // pendiente, confirmada, ya, cancelada, rechazada, pasada, invalido
     'ok' => $ok,                              // true si la reserva está confirmada (confirmada o ya)
-    'reserva' => $ok ? $r : null,             // id, name, date, time, people…
+    'pendiente' => $pend,                     // true si falta que el cliente pulse «Confirmar»: pinta confirmar_form()
+    'reserva' => $ok || $pend ? $r : null,    // id, name, date, time, people…
     'fecha' => $fecha,                        // dia_semana, dia, mes, texto
-    'error' => $ok ? null : ['titulo' => $errores[$state][0], 'texto' => $errores[$state][1]],
+    'error' => $ok || $pend ? null : ['titulo' => $errores[$state][0], 'texto' => $errores[$state][1]],
+    'confirmar_form' => fn(string $texto = 'Confirmar mi reserva', string $clase = '') => $pend
+        ? '<form method="post" action="confirmar.php"><input type="hidden" name="r" value="' . (int)$r['id'] . '"><input type="hidden" name="t" value="' . h($token) . '">'
+          . '<button type="submit"' . ($clase ? ' class="' . h($clase) . '"' : '') . '>' . h($texto) . '</button></form>'
+        : '',
     'ics_url' => $ok ? 'confirmar.php?ics=1&r=' . (int)$r['id'] . '&t=' . $token : '',
 ]);
