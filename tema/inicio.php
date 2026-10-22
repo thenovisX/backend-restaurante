@@ -1,6 +1,6 @@
 <?php
 /*
- * Portada del tema Base. Variables: $s (ajustes), $cliente (o null), $carta (categorías con platos y alérgenos).
+ * Portada del tema Base. Variables: $s (ajustes), $cliente (o null), $carta (categorías con platos y alérgenos), $menu_dia (o null).
  * Funciones útiles: photo_img(), horario_hoy(), politicas(), al_icon(), precio(). Ver TEMA.md.
  */
 require __DIR__ . '/partes.php';
@@ -38,6 +38,29 @@ abrir($s['name'] . ($s['tagline'] ? ' · ' . $s['tagline'] : ''), 'inicio');
     <div class="cont">
       <p class="etiqueta"><?= t('La carta') ?></p>
       <h2 class="titulo"><?= t('Para compartir o para ti solo') ?></h2>
+      <?php if ($menu_dia): ?>
+        <article class="menu-dia" id="menu-dia" aria-labelledby="menu-dia-t">
+          <div class="menu-dia-cab">
+            <h3 id="menu-dia-t"><?= h($menu_dia['title']) ?></h3>
+            <p class="menu-dia-precio"><?= precio($menu_dia['price']) ?></p>
+            <p class="menu-dia-dias"><?= h(mb_strtoupper(mb_substr($menu_dia['days_text'], 0, 1)) . mb_substr($menu_dia['days_text'], 1)) ?> · <strong><?= $menu_dia['today'] ? t('Hoy hay menú') : t('Hoy no hay menú') ?></strong></p>
+          </div>
+          <div class="menu-dia-cursos">
+            <?php foreach ($menu_dia['courses'] as $c): ?>
+              <section>
+                <h4><?= h($c['name']) ?><?php if (count($c['dishes']) > 1): ?> <small><?= t('a elegir') ?></small><?php endif; ?></h4>
+                <ul>
+                  <?php foreach ($c['dishes'] as $d): ?>
+                    <li><?= h($d['name']) ?><?php if ($d['extra'] > 0): ?> <span class="menu-dia-sup" title="<?= t('Suplemento') ?>">+<?= euros($d['extra']) ?> €</span><?php endif; ?><?php if ($d['desc'] !== ''): ?><small><?= h($d['desc']) ?></small><?php endif; ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              </section>
+            <?php endforeach; ?>
+          </div>
+          <?php if ($menu_dia['note'] !== ''): ?><p class="menu-dia-nota"><?= nl2br(h($menu_dia['note'])) ?></p><?php endif; ?>
+          <p class="nota"><?= t('Pregúntanos por los alérgenos de los platos del menú.') ?></p>
+        </article>
+      <?php endif; ?>
       <?php if (!$carta['categories']): ?>
         <p><?= t('La carta aparecerá aquí en cuanto se añadan platos desde la app.') ?></p>
       <?php else: ?>

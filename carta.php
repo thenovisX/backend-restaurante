@@ -8,4 +8,5 @@ if (!tema_tiene('carta')) { header('Location: ./#carta', true, 302); exit; }
 
 tema_render('carta', [
     'carta' => carta_publica(),   // igual que en la portada
+    'menu_dia' => daily_menu_public(),   // menú del día traducido, o null si está desactivado
 ]);

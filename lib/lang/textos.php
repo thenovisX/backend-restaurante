@@ -377,4 +377,13 @@ return [
     'Acepto las <a href="legal.php#politicas" target="_blank">políticas de reserva</a> y las <a href="legal.php#condiciones" target="_blank">condiciones de uso</a>, y he leído la <a href="legal.php#privacidad" target="_blank">política de privacidad</a>.' => ['en' => 'I accept the <a href="legal.php#politicas" target="_blank">booking policies</a> and the <a href="legal.php#condiciones" target="_blank">terms of use</a>, and have read the <a href="legal.php#privacidad" target="_blank">privacy policy</a>.', 'pt' => 'Aceito as <a href="legal.php#politicas" target="_blank">políticas de reserva</a> e as <a href="legal.php#condiciones" target="_blank">condições de utilização</a>, e li a <a href="legal.php#privacidad" target="_blank">política de privacidade</a>.', 'gl' => 'Acepto as <a href="legal.php#politicas" target="_blank">políticas de reserva</a> e as <a href="legal.php#condiciones" target="_blank">condicións de uso</a>, e lin a <a href="legal.php#privacidad" target="_blank">política de privacidade</a>.'],
     'Cerrado hoy' => ['en' => 'Closed today', 'pt' => 'Fechado hoje', 'gl' => 'Pechado hoxe'],
     'en' => ['en' => 'in', 'pt' => 'em', 'gl' => 'en'],
+    'Hoy hay menú' => ['en' => 'Served today', 'pt' => 'Hoje há menu', 'gl' => 'Hoxe hai menú'],
+    'Hoy no hay menú' => ['en' => 'Not served today', 'pt' => 'Hoje não há menu', 'gl' => 'Hoxe non hai menú'],
+    'Hoy no hay menú.' => ['en' => 'Not served today.', 'pt' => 'Hoje não há menu.', 'gl' => 'Hoxe non hai menú.'],
+    'Mira qué hay hoy.' => ['en' => "See what's on today.", 'pt' => 'Veja o que há hoje.', 'gl' => 'Mira que hai hoxe.'],
+    'a elegir' => ['en' => 'choose one', 'pt' => 'à escolha', 'gl' => 'a escoller'],
+    'Suplemento' => ['en' => 'Supplement', 'pt' => 'Suplemento', 'gl' => 'Suplemento'],
+    'Pregúntanos por los alérgenos de los platos del menú.' => ['en' => 'Ask us about allergens in the set menu dishes.', 'pt' => 'Pergunte-nos pelos alergénios dos pratos do menu.', 'gl' => 'Pregúntanos polos alérxenos dos pratos do menú.'],
+    'todos los días' => ['en' => 'every day', 'pt' => 'todos os dias', 'gl' => 'todos os días'],
+    'de %s a %s' => ['en' => '%s to %s', 'pt' => 'de %s a %s', 'gl' => 'de %s a %s'],
 ];

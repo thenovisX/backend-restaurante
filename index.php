@@ -7,4 +7,5 @@ if (!installed()) { header('Location: install.php'); exit; }
 
 tema_render('inicio', [
     'carta' => carta_publica(),   // ['categories' => [...con 'dishes'], 'allergens' => [...]] con nombres y descripciones en el idioma de la visita
+    'menu_dia' => daily_menu_public(),   // menú del día traducido, o null si está desactivado
 ]);
