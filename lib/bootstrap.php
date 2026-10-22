@@ -8,6 +8,7 @@ require __DIR__ . '/reservas.php';
 require __DIR__ . '/carta.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/clientes.php';
+require __DIR__ . '/borrado.php';
 require __DIR__ . '/traductor.php';
 // Configuración del tema (solo constantes: nombre, colores, huecos de foto) y fotos
 require dirname(__DIR__) . '/tema/tema.php';

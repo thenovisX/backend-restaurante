@@ -503,5 +503,22 @@
     navigator.serviceWorker.register('sw.js').catch(function () { /* sin modo app */ });
   }
 
+  // Borrar mis datos: formularios de borrar_form()
+  document.addEventListener('submit', function (e) {
+    var f = e.target.closest && e.target.closest('form[data-erase]');
+    if (!f) return;
+    e.preventDefault();
+    var btn = f.querySelector('button[type=submit]'), msg = f.querySelector('.r-erase-msg');
+    btn.disabled = true;
+    msg.classList.remove('is-err');
+    api('erase_request', { contact: f.contact.value, website: f.website.value }).then(function (d) {
+      msg.textContent = d.message || '';
+      f.contact.value = '';
+    }, function (err) {
+      msg.textContent = err.message;
+      msg.classList.add('is-err');
+    }).then(function () { btn.disabled = false; });
+  });
+
   window.Restaurante = { api: api, toast: toast, t: T, abrirReserva: openBooking, ampliarFotos: zoomPrepare, datos: R };
 })();

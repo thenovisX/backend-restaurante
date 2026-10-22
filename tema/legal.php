@@ -13,6 +13,10 @@ abrir(t('Información legal') . ' · ' . $s['name'], 'pagina');
       <?= $sec['html'] ?>
     </section>
   <?php endforeach; ?>
+  <section id="borrar-datos">
+    <h2><?= t('Borrar todos mis datos') ?></h2>
+    <?= borrar_form('boton boton-acento') ?>
+  </section>
   <p class="nota"><?= t('Última actualización: %s.', h(date('j/n/Y', strtotime(LEGAL_VERSION)))) ?></p>
 </main>
 <?php cerrar();

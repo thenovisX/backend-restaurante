@@ -191,3 +191,14 @@ img[data-zoom] { cursor: zoom-in; }
 #bk-people { gap: 10px; }
 #bk-people span, #bk-people .bk-more select { min-width: 58px; height: 58px; font-size: 1.4rem; }
 #bk-people input:checked + span { transform: scale(1.08); box-shadow: 0 0 0 3px var(--r-accent); }
+
+/* Borrar mis datos (borrar_form) */
+.r-erase { display: grid; gap: 10px; max-width: 560px; }
+.r-erase label { font-weight: 600; }
+.r-erase-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.r-erase-row input { flex: 1 1 220px; min-height: 48px; padding: 0 14px; border-radius: var(--r-btn-radius, 999px); border: 1px solid var(--r-line); background: var(--r-field, transparent); color: inherit; font: inherit; }
+.r-erase-help { margin: 0; color: var(--r-muted); font-size: .92rem; }
+.r-erase-msg { margin: 0; font-weight: 600; }
+.r-erase-msg:empty { display: none; }
+.r-erase-msg.is-err { color: #B3362B; }
+.r-hp { position: absolute !important; left: -9999px; }

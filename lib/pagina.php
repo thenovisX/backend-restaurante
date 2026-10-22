@@ -12,7 +12,7 @@ declare(strict_types=1);
 detect_lang();
 
 /** Versión del SDK: súbela si cambias algo de web/sdk/ para que los navegadores lo descarguen de nuevo. */
-const SDK_V = '4';
+const SDK_V = '5';
 
 /** Versión de los archivos del tema (la define el tema en tema.php; si no, 1). */
 function tema_v(): string
@@ -307,6 +307,21 @@ function body_end(array $opts = []): void
 }
 
 /** Enlace que abre el aviso de cookies para cambiar la elección (obligatorio tenerlo en el pie). */
+/**
+ * Formulario «Borrar mis datos»: el cliente escribe su email o teléfono y recibe un enlace para confirmarlo.
+ * Lo envía el SDK (form[data-erase]); el tema solo le da estilo (.r-erase…). $class se añade al botón.
+ */
+function borrar_form(string $class = ''): string
+{
+    return '<form class="r-erase" data-erase novalidate>'
+        . '<label for="r-erase-c">' . t('Tu email o tu teléfono') . '</label>'
+        . '<div class="r-erase-row"><input id="r-erase-c" name="contact" type="text" inputmode="email" autocomplete="email" maxlength="120" placeholder="' . h(t('ejemplo@correo.com o 600 123 456')) . '" required>'
+        . '<button type="submit"' . ($class ? ' class="' . h($class) . '"' : '') . '>' . t('Borrar mis datos') . '</button></div>'
+        . '<label class="r-hp" aria-hidden="true">' . t('No rellenar') . ' <input name="website" tabindex="-1" autocomplete="off"></label>'
+        . '<p class="r-erase-help">' . t('Borraremos tu cuenta, tus reservas y el registro de actividad. Las reservas que aún no hayan pasado se cancelarán. Para que nadie pueda borrar los datos de otra persona, te enviaremos un enlace para confirmarlo: por email si escribes tu email, o por WhatsApp si escribes tu teléfono.') . '</p>'
+        . '<p class="r-erase-msg" role="status" aria-live="polite"></p></form>';
+}
+
 function cookies_link(string $text = '', string $class = ''): string
 {
     $text = $text !== '' ? $text : t('Configurar cookies');

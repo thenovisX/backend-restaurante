@@ -64,7 +64,7 @@ function cerrar(): void
     </div>
     <div>
       <h2><?= t('Información') ?></h2>
-      <p class="pie-links"><a href="cuenta.php"><?= t('Mi cuenta') ?></a><a href="legal.php#politicas"><?= t('Políticas de reserva') ?></a><a href="legal.php#aviso"><?= t('Aviso legal') ?></a><a href="legal.php#privacidad"><?= t('Privacidad') ?></a><a href="legal.php#cookies">Cookies</a><?= cookies_link() ?></p>
+      <p class="pie-links"><a href="cuenta.php"><?= t('Mi cuenta') ?></a><a href="legal.php#politicas"><?= t('Políticas de reserva') ?></a><a href="legal.php#aviso"><?= t('Aviso legal') ?></a><a href="legal.php#privacidad"><?= t('Privacidad') ?></a><a href="borrar-datos.php"><?= t('Borrar mis datos') ?></a><a href="legal.php#cookies">Cookies</a><?= cookies_link() ?></p>
     </div>
   </div>
   <p class="cont pie-legal">© <?= date('Y') ?> <?= h($s['name']) ?>.<?php $cr = photo_credits(); if ($cr): ?> <?= t('Fotos de') ?> <?php $i = 0; foreach ($cr as $p): ?><?= $i++ ? ', ' : '' ?><a href="<?= h($p['url']) ?>" target="_blank" rel="noopener"><?= h($p['by']) ?></a><?php endforeach; ?> <?= t('en Unsplash') ?>.<?php endif; ?></p>
