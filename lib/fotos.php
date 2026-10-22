@@ -60,7 +60,7 @@ function photo_srcset(string $key, array $widths = [640, 1024, 1600, 2200]): str
 /** Texto alternativo de una foto. */
 function photo_alt(string $key): string
 {
-    return tema_fotos()[$key]['alt'] ?? '';
+    return t(tema_fotos()[$key]['alt'] ?? '');
 }
 
 /** <img> listo para usar, con srcset, alt y carga diferida. */

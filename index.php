@@ -6,5 +6,5 @@ require __DIR__ . '/lib/pagina.php';
 if (!installed()) { header('Location: install.php'); exit; }
 
 tema_render('inicio', [
-    'carta' => menu_data(false),   // ['categories' => [...con 'dishes'], 'allergens' => [...]]
+    'carta' => carta_publica(),   // ['categories' => [...con 'dishes'], 'allergens' => [...]] con nombres y descripciones en el idioma de la visita
 ]);

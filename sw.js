@@ -1,6 +1,6 @@
 /* Service worker de la web pública: permite instalarla como app y abrirla sin conexión. */
-const CACHE = 'web-v1';
-const SHELL = ['./', 'sdk/restaurante.css?v=1', 'sdk/restaurante.js?v=1', 'sdk/consent.js?v=1', 'icon.php?s=192', 'manifest.php'];
+const CACHE = 'web-v2';
+const SHELL = ['./', 'sdk/restaurante.css?v=2', 'sdk/restaurante.js?v=2', 'sdk/consent.js?v=2', 'icon.php?s=192', 'manifest.php'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

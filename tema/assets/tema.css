@@ -222,3 +222,15 @@ details.borrar .form { margin-top: 14px; }
 .confirmar-cancelar form { display: inline; }
 .enlace-boton { background: none; border: 0; padding: 0; font: inherit; color: var(--tinta); text-decoration: underline; cursor: pointer; }
 .confirmar-boton .boton { width: 100%; min-height: 58px; font-size: 1.08rem; }
+
+/* Selector de idioma de la cabecera */
+.cab-idiomas { margin-left: auto; }
+.cab-idiomas + .cab-reservar { margin-left: 0; }
+.cab-idiomas .r-lang { width: 32px; height: 32px; }
+.cab-idiomas .r-flag { width: 22px; height: 22px; }
+@media (max-width: 520px) {
+  .cab-idiomas .r-lang { width: 28px; height: 28px; }
+  .cab-idiomas .r-flag { width: 20px; height: 20px; }
+  .cab-reservar { padding: 0 12px; }
+}
+@media (max-width: 520px) { .cab-marca { font-size: 1.05rem; line-height: 1.1; } }

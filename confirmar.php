@@ -14,7 +14,7 @@ if (isset($_GET['ics'])) {
     $row = q('SELECT * FROM reservations WHERE id = ?', [$id])->fetch();
     if (!$row || !preg_match('/^[a-f0-9]{32}$/', $token) || !hash_equals(dec($row['verify_token']), $token) || $row['status'] !== 'confirmada') {
         http_response_code(404);
-        exit('Reserva no encontrada');
+        exit(t('Reserva no encontrada'));
     }
     $r = res_out($row);
     $start = strtotime($r['date'] . ' ' . $r['time']);
@@ -30,10 +30,10 @@ if (isset($_GET['ics'])) {
         'DTSTAMP:' . $fmt(time()),
         'DTSTART:' . $fmt($start),
         'DTEND:' . $fmt($start + 2 * 3600),
-        'SUMMARY:' . $esc('Reserva en ' . $s['name'] . ' (' . $r['people'] . ' pers.)'),
+        'SUMMARY:' . $esc(t('Reserva en %s', $s['name']) . ' (' . $r['people'] . ' ' . t('pers.') . ')'),
         'LOCATION:' . $esc($loc),
-        'DESCRIPTION:' . $esc('Mesa para ' . $r['people'] . ' a nombre de ' . $r['name'] . '.' . ($s['phone'] ? ' Teléfono del restaurante: ' . $s['phone'] : '')),
-        'BEGIN:VALARM', 'TRIGGER:-PT2H', 'ACTION:DISPLAY', 'DESCRIPTION:' . $esc('Reserva en ' . $s['name']), 'END:VALARM',
+        'DESCRIPTION:' . $esc(t('Mesa para %d a nombre de %s.', $r['people'], $r['name']) . ($s['phone'] ? ' ' . t('Teléfono del restaurante:') . ' ' . $s['phone'] : '')),
+        'BEGIN:VALARM', 'TRIGGER:-PT2H', 'ACTION:DISPLAY', 'DESCRIPTION:' . $esc(t('Reserva en %s', $s['name'])), 'END:VALARM',
         'END:VEVENT', 'END:VCALENDAR', '',
     ]);
     exit;
@@ -60,18 +60,16 @@ $pend = $state === 'pendiente';
 $errores = [
     // Cancelada por el cliente (desde el enlace o su cuenta) o por el restaurante (también si la borró en el panel)
     'cancelada' => ($r['cancel_by'] ?? '') === 'restaurante'
-        ? ['Reserva cancelada', 'El restaurante ha cancelado esta reserva.' . ($s['phone'] ? ' Si tienes dudas, llámanos al ' . $s['phone'] . '.' : '')]
-        : ['Reserva cancelada', 'Tu reserva está cancelada. Si quieres venir otro día, haz una reserva nueva: tardas un minuto.'],
-    'rechazada' => ['No pudimos atender esta reserva', 'Prueba con otro día u otra hora.'],
-    'pasada'    => ['Este enlace ha caducado', 'La fecha de la reserva ya ha pasado.'],
-    'invalido'  => ['Este enlace no funciona', 'Puede que se haya copiado incompleto. Ábrelo otra vez desde el WhatsApp o haz una reserva nueva.'],
+        ? [t('Reserva cancelada'), t('El restaurante ha cancelado esta reserva.') . ($s['phone'] ? ' ' . t('Si tienes dudas, llámanos al %s.', $s['phone']) : '')]
+        : [t('Reserva cancelada'), t('Tu reserva está cancelada. Si quieres venir otro día, haz una reserva nueva: tardas un minuto.')],
+    'rechazada' => [t('No pudimos atender esta reserva'), t('Prueba con otro día u otra hora.')],
+    'pasada'    => [t('Este enlace ha caducado'), t('La fecha de la reserva ya ha pasado.')],
+    'invalido'  => [t('Este enlace no funciona'), t('Puede que se haya copiado incompleto. Ábrelo otra vez desde el WhatsApp o haz una reserva nueva.')],
 ];
 $fecha = null;
 if ($ok || $pend) {
     $ts = strtotime($r['date'] . ' ' . $r['time']);
-    $dias = ['', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-    $meses = ['', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
-    $fecha = ['dia_semana' => $dias[(int)date('N', $ts)], 'dia' => (int)date('j', $ts), 'mes' => $meses[(int)date('n', $ts)], 'texto' => fmt_date_es($r['date'])];
+    $fecha = ['dia_semana' => day_name((int)date('N', $ts), true), 'dia' => (int)date('j', $ts), 'mes' => month_name((int)date('n', $ts)), 'texto' => fmt_date_l($r['date'])];
 }
 
 tema_render('confirmar', [
@@ -81,14 +79,14 @@ tema_render('confirmar', [
     'reserva' => $ok || $pend ? $r : null,    // id, name, date, time, people…
     'fecha' => $fecha,                        // dia_semana, dia, mes, texto
     'error' => $ok || $pend ? null : ['titulo' => $errores[$state][0], 'texto' => $errores[$state][1]],
-    'confirmar_form' => fn(string $texto = 'Confirmar mi reserva', string $clase = '') => $pend
+    'confirmar_form' => fn(string $texto = '', string $clase = '') => $pend
         ? '<form method="post" action="confirmar.php"><input type="hidden" name="r" value="' . (int)$r['id'] . '"><input type="hidden" name="t" value="' . h($token) . '">'
-          . '<button type="submit"' . ($clase ? ' class="' . h($clase) . '"' : '') . '>' . h($texto) . '</button></form>'
+          . '<button type="submit"' . ($clase ? ' class="' . h($clase) . '"' : '') . '>' . h($texto !== '' ? $texto : t('Confirmar mi reserva')) . '</button></form>'
         : '',
     // Botón «Cancelar la reserva» (pide confirmación): sale mientras la reserva está pendiente o confirmada
-    'cancelar_form' => fn(string $texto = 'Cancelar la reserva', string $clase = '') => $ok || $pend
-        ? '<form method="post" action="confirmar.php" onsubmit="return confirm(\'¿Seguro que quieres cancelar la reserva?\')"><input type="hidden" name="r" value="' . (int)$r['id'] . '"><input type="hidden" name="t" value="' . h($token) . '"><input type="hidden" name="accion" value="cancelar">'
-          . '<button type="submit"' . ($clase ? ' class="' . h($clase) . '"' : '') . '>' . h($texto) . '</button></form>'
+    'cancelar_form' => fn(string $texto = '', string $clase = '') => $ok || $pend
+        ? '<form method="post" action="confirmar.php" onsubmit="return confirm(' . h(json_encode(t('¿Seguro que quieres cancelar la reserva?'), JSON_UNESCAPED_UNICODE)) . ')"><input type="hidden" name="r" value="' . (int)$r['id'] . '"><input type="hidden" name="t" value="' . h($token) . '"><input type="hidden" name="accion" value="cancelar">'
+          . '<button type="submit"' . ($clase ? ' class="' . h($clase) . '"' : '') . '>' . h($texto !== '' ? $texto : t('Cancelar la reserva')) . '</button></form>'
         : '',
     'ics_url' => $ok ? 'confirmar.php?ics=1&r=' . (int)$r['id'] . '&t=' . $token : '',
 ]);
