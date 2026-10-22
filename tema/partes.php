@@ -26,7 +26,8 @@ function abrir(string $titulo, string $clase = ''): void
   <div class="cab-in">
     <a class="cab-marca" href="./"><?= h($s['name']) ?></a>
     <nav class="cab-nav" id="menu" aria-label="<?= t('Principal') ?>">
-      <a href="./#carta"><?= t('Carta') ?></a>
+      <?php if (carta_on() || !menus_public()): ?><a href="./#carta"><?= t('Carta') ?></a><?php endif; ?>
+      <?php if (menus_public()): ?><a href="./#menus"><?= t('Menús') ?></a><?php endif; ?>
       <a href="./#nosotros"><?= t('Nosotros') ?></a>
       <a href="./#visitanos"><?= t('Visítanos') ?></a>
       <a href="cuenta.php"><?= $c ? t('Mi cuenta') : t('Entrar') ?></a>

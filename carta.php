@@ -10,4 +10,5 @@ tema_render('carta', [
     'carta' => carta_publica(),   // igual que en la portada
     'menus' => menus_public(),   // menús activos (del día, degustación…) traducidos; [] si no hay
     'carta_on' => carta_on(),    // ¿el restaurante quiere mostrar la carta principal?
+    'menus_button' => menus_button(),   // ¿quiere el botón «Ver menús» en la portada?
 ]);

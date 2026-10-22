@@ -249,3 +249,6 @@ details.borrar .form { margin-top: 14px; }
 .menu-dia-cursos li small { display: block; font-weight: 400; color: var(--suave); font-size: .9rem; }
 .menu-dia-sup { display: inline-block; font-size: .75rem; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: var(--acento); color: #fff; }
 .menu-dia-nota { margin: 18px 0 0; padding-top: 14px; border-top: 1px dashed var(--linea); }
+.menu-dia-cursos li.con-foto { display: flex; gap: 12px; align-items: center; }
+.menu-dia-foto { width: 64px; height: 64px; flex: none; object-fit: cover; border-radius: 12px; cursor: zoom-in; }
+.menu-dia-cursos .plato-al { display: flex; gap: 4px; margin-top: 4px; }
