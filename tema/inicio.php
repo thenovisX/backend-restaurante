@@ -87,9 +87,9 @@ abrir($s['name'] . ($s['tagline'] ? ' · ' . $s['tagline'] : ''), 'inicio');
           <?php foreach ($carta['categories'] as $cat): ?><a href="#cat-<?= $cat['id'] ?>"><?= h($cat['name']) ?></a><?php endforeach; ?>
         </nav>
         <div class="carta">
-          <?php foreach ($carta['categories'] as $cat): ?>
-            <section class="carta-sec" id="cat-<?= $cat['id'] ?>">
-              <h3><?= h($cat['name']) ?></h3>
+          <?php foreach ($carta['categories'] as $ci => $cat): ?>
+            <details class="carta-sec" id="cat-<?= $cat['id'] ?>"<?= $ci === 0 ? ' open' : '' ?>>
+              <summary><h3><?= h($cat['name']) ?></h3><span class="carta-sec-n"><?= count($cat['dishes']) ?></span></summary>
               <ul>
                 <?php foreach ($cat['dishes'] as $d): ?>
                   <li class="plato<?= $d['featured'] ? ' plato-destacado' : '' ?>">
@@ -103,7 +103,7 @@ abrir($s['name'] . ($s['tagline'] ? ' · ' . $s['tagline'] : ''), 'inicio');
                   </li>
                 <?php endforeach; ?>
               </ul>
-            </section>
+            </details>
           <?php endforeach; ?>
         </div>
         <?php if ($usados): ?>
