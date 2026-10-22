@@ -186,3 +186,8 @@ img[data-zoom] { cursor: zoom-in; }
 .r-lb-x:hover, .r-lb-nav:hover, .r-lb-x:focus-visible, .r-lb-nav:focus-visible { border-color: #fff; outline: none; }
 .r-lb-one .r-lb-nav { display: none; }
 @media (max-width: 600px) { .r-lb-nav { top: auto; bottom: 10px; transform: none; } .r-lb-prev { left: calc(50% - 60px); } .r-lb-next { right: calc(50% - 60px); } .r-lb-in { padding-bottom: 76px; } }
+
+/* Número de personas: grande y claro */
+#bk-people { gap: 10px; }
+#bk-people span, #bk-people .bk-more select { min-width: 58px; height: 58px; font-size: 1.4rem; }
+#bk-people input:checked + span { transform: scale(1.08); box-shadow: 0 0 0 3px var(--r-accent); }

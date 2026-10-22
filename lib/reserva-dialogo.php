@@ -6,6 +6,8 @@
  */
 $s = settings();
 $c = current_customer();
+$wa = wa_number($s['whatsapp']);
+$hayOpc = $s['phone'] || $wa;
 ?>
 <dialog class="bk" id="bk" aria-labelledby="bk-title">
   <form class="bk-in" id="bk-form" method="dialog" novalidate>
@@ -18,17 +20,25 @@ $c = current_customer();
       <button class="bk-close" type="button" data-close aria-label="<?= t('Cerrar') ?>">×</button>
     </header>
 
-    <?php if ($s['phone']): ?>
+    <?php if ($hayOpc): ?>
     <section class="bk-pane" data-pane="0" hidden>
       <div class="bk-opts">
         <button class="bk-opt" type="button" data-next="1">
           <b><?= t('Reservar online') ?></b>
           <span><?= t('Elige día y hora y te confirmamos por WhatsApp.') ?></span>
         </button>
+        <?php if ($s['phone']): ?>
         <a class="bk-opt" id="bk-call" href="<?= h(tel_href($s['phone'])) ?>" data-href="<?= h(tel_href($s['phone'])) ?>">
           <b><?= t('Llamar por teléfono') ?></b>
           <span id="bk-call-txt"><?= h($s['phone']) ?></span>
         </a>
+        <?php endif; ?>
+        <?php if ($wa): ?>
+        <a class="bk-opt" href="https://wa.me/<?= h($wa) ?>" target="_blank" rel="noopener">
+          <b><?= t('Escribir por WhatsApp') ?></b>
+          <span><?= t('Pregúntanos o reserva por mensaje.') ?></span>
+        </a>
+        <?php endif; ?>
       </div>
     </section>
     <?php endif; ?>
