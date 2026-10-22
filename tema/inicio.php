@@ -1,6 +1,6 @@
 <?php
 /*
- * Portada del tema Base. Variables: $s (ajustes), $cliente (o null), $carta (categorías con platos y alérgenos), $menu_dia (o null).
+ * Portada del tema Base. Variables: $s (ajustes), $cliente (o null), $carta (categorías con platos y alérgenos), $menus (lista, puede estar vacía), $carta_on.
  * Funciones útiles: photo_img(), horario_hoy(), politicas(), al_icon(), precio(). Ver TEMA.md.
  */
 require __DIR__ . '/partes.php';
@@ -38,15 +38,19 @@ abrir($s['name'] . ($s['tagline'] ? ' · ' . $s['tagline'] : ''), 'inicio');
     <div class="cont">
       <p class="etiqueta"><?= t('La carta') ?></p>
       <h2 class="titulo"><?= t('Para compartir o para ti solo') ?></h2>
-      <?php if ($menu_dia): ?>
-        <article class="menu-dia" id="menu-dia" aria-labelledby="menu-dia-t">
+      <?php if ($menus): ?>
+        <?php if (count($menus) > 1): ?>
+          <nav class="carta-nav" aria-label="<?= t('Menús') ?>"><?php foreach ($menus as $m): ?><a href="#menu-<?= h($m['id']) ?>"><?= h($m['title']) ?></a><?php endforeach; ?></nav>
+        <?php endif; ?>
+        <?php foreach ($menus as $m): ?>
+        <article class="menu-dia" id="menu-<?= h($m['id']) ?>" aria-labelledby="menu-t-<?= h($m['id']) ?>">
           <div class="menu-dia-cab">
-            <h3 id="menu-dia-t"><?= h($menu_dia['title']) ?></h3>
-            <p class="menu-dia-precio"><?= precio($menu_dia['price']) ?></p>
-            <p class="menu-dia-dias"><?= h(mb_strtoupper(mb_substr($menu_dia['days_text'], 0, 1)) . mb_substr($menu_dia['days_text'], 1)) ?> · <strong><?= $menu_dia['today'] ? t('Hoy hay menú') : t('Hoy no hay menú') ?></strong></p>
+            <h3 id="menu-t-<?= h($m['id']) ?>"><?= h($m['title']) ?></h3>
+            <p class="menu-dia-precio"><?= precio($m['price']) ?></p>
+            <p class="menu-dia-dias"><?= h(mb_strtoupper(mb_substr($m['days_text'], 0, 1)) . mb_substr($m['days_text'], 1)) ?><?php if (!$m['every_day']): ?> · <strong><?= $m['today'] ? t('Hoy sí') : t('Hoy no') ?></strong><?php endif; ?></p>
           </div>
           <div class="menu-dia-cursos">
-            <?php foreach ($menu_dia['courses'] as $c): ?>
+            <?php foreach ($m['courses'] as $c): ?>
               <section>
                 <h4><?= h($c['name']) ?><?php if (count($c['dishes']) > 1): ?> <small><?= t('a elegir') ?></small><?php endif; ?></h4>
                 <ul>
@@ -57,12 +61,14 @@ abrir($s['name'] . ($s['tagline'] ? ' · ' . $s['tagline'] : ''), 'inicio');
               </section>
             <?php endforeach; ?>
           </div>
-          <?php if ($menu_dia['note'] !== ''): ?><p class="menu-dia-nota"><?= nl2br(h($menu_dia['note'])) ?></p><?php endif; ?>
+          <?php if ($m['note'] !== ''): ?><p class="menu-dia-nota"><?= nl2br(h($m['note'])) ?></p><?php endif; ?>
           <p class="nota"><?= t('Pregúntanos por los alérgenos de los platos del menú.') ?></p>
         </article>
+        <?php endforeach; ?>
       <?php endif; ?>
+      <?php if ($carta_on): ?>
       <?php if (!$carta['categories']): ?>
-        <p><?= t('La carta aparecerá aquí en cuanto se añadan platos desde la app.') ?></p>
+        <?php if (!$menus): ?><p><?= t('La carta aparecerá aquí en cuanto se añadan platos desde la app.') ?></p><?php endif; ?>
       <?php else: ?>
         <nav class="carta-nav" aria-label="<?= t('Secciones de la carta') ?>">
           <?php foreach ($carta['categories'] as $cat): ?><a href="#cat-<?= $cat['id'] ?>"><?= h($cat['name']) ?></a><?php endforeach; ?>
@@ -99,6 +105,7 @@ abrir($s['name'] . ($s['tagline'] ? ' · ' . $s['tagline'] : ''), 'inicio');
           </details>
         <?php endif; ?>
       <?php endif; ?>
+      <?php endif; /* carta_on */ ?>
     </div>
   </section>
 

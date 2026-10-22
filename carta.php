@@ -8,5 +8,6 @@ if (!tema_tiene('carta')) { header('Location: ./#carta', true, 302); exit; }
 
 tema_render('carta', [
     'carta' => carta_publica(),   // igual que en la portada
-    'menu_dia' => daily_menu_public(),   // menú del día traducido, o null si está desactivado
+    'menus' => menus_public(),   // menús activos (del día, degustación…) traducidos; [] si no hay
+    'carta_on' => carta_on(),    // ¿el restaurante quiere mostrar la carta principal?
 ]);

@@ -12,7 +12,7 @@ declare(strict_types=1);
 detect_lang();
 
 /** Versión del SDK: súbela si cambias algo de web/sdk/ para que los navegadores lo descarguen de nuevo. */
-const SDK_V = '3';
+const SDK_V = '4';
 
 /** Versión de los archivos del tema (la define el tema en tema.php; si no, 1). */
 function tema_v(): string
