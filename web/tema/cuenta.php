@@ -1,6 +1,6 @@
 <?php
 /*
- * Cuenta del cliente. Variables: $cliente (null si no ha entrado), $reservas (upcoming/past), $activada,
+ * Cuenta del cliente. Variables: $cliente (null si no ha entrado), $reservas (upcoming/past), $activada, $email_cambiado,
  * $enlace_caducado, $registro. El comportamiento lo pone el SDK con atributos data-*: ver TEMA.md.
  */
 require __DIR__ . '/partes.php';
@@ -50,6 +50,7 @@ abrir(($cliente ? t('Mi cuenta') : t('Entrar')) . ' · ' . $s['name'], 'pagina')
   <div class="cuenta-cab">
     <h1 class="titulo"><?= t('Hola, %s', h(explode(' ', $cliente['name'])[0])) ?></h1>
     <?php if ($activada): ?><p class="aviso aviso-ok"><?= t('Cuenta activada. Ya puedes reservar sin escribir tus datos.') ?></p><?php endif; ?>
+    <?php if (!empty($email_cambiado)): ?><p class="aviso aviso-ok"><?= t('Email cambiado. A partir de ahora usa el nuevo para entrar.') ?></p><?php endif; ?>
     <a class="boton boton-acento" href="#reservar" data-book><?= t('Nueva reserva') ?></a>
   </div>
 

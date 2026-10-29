@@ -49,6 +49,7 @@ function tema_render(string $vista, array $vars = []): never
     $file = dirname(__DIR__) . '/tema/' . $vista . '.php';
     if (!is_file($file)) throw new RuntimeException("Falta el archivo del tema: tema/$vista.php");
     if (!headers_sent()) header('Cache-Control: no-cache, must-revalidate, max-age=0');
+    send_csp();   // los scripts en línea del tema necesitan el atributo nonce con csp_nonce() (ver TEMA.md)
     $s = settings_tr();
     $cliente = current_customer();
     extract($vars, EXTR_SKIP);
@@ -262,14 +263,14 @@ function head_tags(string $description = ''): void
 <link rel="manifest" href="manifest.php">
 <link rel="icon" href="icon.php?s=192" type="image/png">
 <link rel="apple-touch-icon" href="icon.php?s=180">
-<script>
+<script nonce="<?= csp_nonce() ?>">
   window.I18N = <?= json_encode(js_i18n(), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
   window.SITE_TRACKING = <?= json_encode(['ga' => $s['ga_id'], 'gtm' => $s['gtm_id'], 'pixel' => $s['pixel_id']], JSON_HEX_TAG) ?>;
   window.dataLayer = window.dataLayer || [];
   function gtag() { dataLayer.push(arguments); }
   gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', wait_for_update: 500 });
 </script>
-<script src="sdk/consent.js?v=<?= SDK_V ?>" defer></script>
+<script src="sdk/consent.js?v=<?= SDK_V ?>" nonce="<?= csp_nonce() ?>" defer></script>
 <link rel="stylesheet" href="sdk/restaurante.css?v=<?= SDK_V ?>">
 <?php if ($home): ?>
 <script type="application/ld+json"><?= json_encode(array_filter([
@@ -301,8 +302,8 @@ function body_end(array $opts = []): void
     $data = ['today' => today(), 'daysAhead' => (int)$s['days_ahead'], 'maxPeople' => (int)$s['max_people'], 'name' => $s['name'],
         'hours' => $s['hours'], 'closed' => $s['closed_dates'], 'phone' => $s['phone'], 'now' => date('Y-m-d H:i'), 'customer' => customer_out($c)];
     ?>
-<script>window.RESTAURANT = <?= json_encode($data, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;</script>
-<script src="sdk/restaurante.js?v=<?= SDK_V ?>" defer></script>
+<script nonce="<?= csp_nonce() ?>">window.RESTAURANT = <?= json_encode($data, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;</script>
+<script src="sdk/restaurante.js?v=<?= SDK_V ?>" nonce="<?= csp_nonce() ?>" defer></script>
     <?php
 }
 

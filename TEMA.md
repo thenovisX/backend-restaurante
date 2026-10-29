@@ -52,6 +52,7 @@ El resto es libre: `partes.php` (cabecera y pie compartidos), `assets/` (CSS, JS
 ## Reglas legales para el diseño
 
 - **Nada de recursos de otras webs**: ni Google Fonts desde Google, ni imágenes o scripts de otros dominios. Descarga las fuentes a `tema/assets/fonts/` (las de Google Fonts tienen licencia libre). La política de privacidad dice que todo se sirve desde el propio servidor.
+- **Scripts en archivos `.js`**: la web envía una Content-Security-Policy que solo deja ejecutar scripts de este servidor. Un `<script>` en línea solo funciona con `nonce="<?= csp_nonce() ?>"`, y los atributos `onclick=`, `onsubmit=`… no funcionan: usa `addEventListener` en `tema.js` (para pedir confirmación antes de enviar un formulario basta con `<form data-confirm="¿Seguro?">`).
 - **Mapas**: si incrustas Google Maps, cárgalo solo cuando el visitante pulse un botón («Mostrar el mapa») y pon `const TEMA_GOOGLE_MAPS = true;` en `tema.php`. Así se añade el aviso en la página de cookies.
 - **No cambies los textos legales** desde el tema: salen de `lib/legal.php` y se rellenan solos.
 - **Muestra la información de alérgenos** en la carta (los iconos con su nombre o la leyenda).
