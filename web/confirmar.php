@@ -85,7 +85,7 @@ tema_render('confirmar', [
         : '',
     // Botón «Cancelar la reserva» (pide confirmación): sale mientras la reserva está pendiente o confirmada
     'cancelar_form' => fn(string $texto = '', string $clase = '') => $ok || $pend
-        ? '<form method="post" action="confirmar.php" onsubmit="return confirm(' . h(json_encode(t('¿Seguro que quieres cancelar la reserva?'), JSON_UNESCAPED_UNICODE)) . ')"><input type="hidden" name="r" value="' . (int)$r['id'] . '"><input type="hidden" name="t" value="' . h($token) . '"><input type="hidden" name="accion" value="cancelar">'
+        ? '<form method="post" action="confirmar.php" data-confirm="' . h(t('¿Seguro que quieres cancelar la reserva?')) . '"><input type="hidden" name="r" value="' . (int)$r['id'] . '"><input type="hidden" name="t" value="' . h($token) . '"><input type="hidden" name="accion" value="cancelar">'
           . '<button type="submit"' . ($clase ? ' class="' . h($clase) . '"' : '') . '>' . h($texto !== '' ? $texto : t('Cancelar la reserva')) . '</button></form>'
         : '',
     'ics_url' => $ok ? 'confirmar.php?ics=1&r=' . (int)$r['id'] . '&t=' . $token : '',
