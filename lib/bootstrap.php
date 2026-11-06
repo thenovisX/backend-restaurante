@@ -16,3 +16,5 @@ require __DIR__ . '/fotos.php';
 
 date_default_timezone_set(cfg()['timezone'] ?? 'Europe/Madrid');
 ini_set('display_errors', !empty(cfg()['debug']) ? '1' : '0');
+// Los errores que se anotan en el registro no llevan los datos de la petición (contraseñas, teléfonos…)
+ini_set('zend.exception_ignore_args', '1');
